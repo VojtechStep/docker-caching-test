@@ -14,24 +14,24 @@ jobs:
     # the OS must be GNU/Linux to be able to use the docker-coq-action
     runs-on: ubuntu-latest
     steps:
-      - name: Restore docker-coq cache
-        id: docker-cache-coq
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.DOCKER_CACHE_PATH }}/coq
-          key: docker-cache-coq-${{ env.COQ_VERSION }}
-      - name: Download docker-coq image if not cached
-        if: steps.docker-cache-coq.outputs.cache-hit != 'true'
-        env:
-          COQ_IMAGE: 'coqorg/coq:${{ env.COQ_VERSION }}'
-        run: |
-          docker pull ${{ env.COQ_IMAGE }}
-          echo Saving docker image to ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
-          mkdir -p ${{ env.DOCKER_CACHE_PATH }}/coq
-          docker image save ${{ env.COQ_IMAGE }} --output ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
-      - name: Load docker-coq image
-        if: steps.docker-cache-coq.outputs.cache-hit == 'true'
-        run: docker image load --input ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
+      # - name: Restore docker-coq cache
+      #   id: docker-cache-coq
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ env.DOCKER_CACHE_PATH }}/coq
+      #     key: docker-cache-coq-${{ env.COQ_VERSION }}
+      # - name: Download docker-coq image if not cached
+      #   if: steps.docker-cache-coq.outputs.cache-hit != 'true'
+      #   env:
+      #     COQ_IMAGE: 'coqorg/coq:${{ env.COQ_VERSION }}'
+      #   run: |
+      #     docker pull ${{ env.COQ_IMAGE }}
+      #     echo Saving docker image to ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
+      #     mkdir -p ${{ env.DOCKER_CACHE_PATH }}/coq
+      #     docker image save ${{ env.COQ_IMAGE }} --output ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
+      # - name: Load docker-coq image
+      #   if: steps.docker-cache-coq.outputs.cache-hit == 'true'
+      #   run: docker image load --input ${{ env.DOCKER_CACHE_PATH }}/coq/coq-${{ env.COQ_VERSION }}.tar
 
       - uses: actions/checkout@v4
       - uses: coq-community/docker-coq-action@v1
